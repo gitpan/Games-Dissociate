@@ -1,6 +1,6 @@
 
-# Time-stamp: "2000-05-13 22:09:12 MDT" -*-Perl-*-
-
+# Time-stamp: "2001-03-08 18:29:43 MST" -*-Perl-*-
+### The POD is at the end. ###
 require 5.000;
 package Games::Dissociate;
 use strict;
@@ -10,8 +10,167 @@ use vars qw(@ISA @EXPORT @EXPORT_OK $Debug $VERSION);
 use Carp;
 @ISA = qw(Exporter);
 @EXPORT = qw(dissociate_filter dissociate);
-$VERSION = 0.13;
+$VERSION = 0.14;
 $Debug = 0;
+
+###########################################################################
+
+sub dissociate_filter {
+  require Text::Wrap;
+  require Getopt::Std;
+  my %o;
+  if(@ARGV) {
+    Getopt::Std::getopts('c:w:m:', \%o)
+     or die "Options:
+  -cNUMBER
+      Run a by-character dissociation with that number of
+      characters as the group size.
+  -wNUMBER
+      Run a by-word dissociation with that number of
+      words as the group size.
+  -mNUMBER
+      Specifies how many iterations the dissociator loop should make.
+";
+  }
+
+  my $o;
+  my $max;
+  if($_[0]) {
+    $o = $_[0];
+  } elsif($o{'w'}){
+    $o = - abs($o{'w'});
+  } elsif($o{'c'}){
+    $o =   abs($o{'c'});
+  }
+  $o ||= 2;
+
+  if($_[1]) {
+    $max = $_[1];
+  } else {
+    $max = abs($o{'m'});
+  }
+  $max ||= 100;
+
+  print "group_length: $o.  max_length: $max\n" if $Debug;
+  print Text::Wrap::wrap(   '','', dissociate(join('', <>), $o, $max)  ), "\n";
+  return;
+}
+
+#==========================================================================
+sub dissociate {
+  my $in = $_[0];
+  my $arg = int($_[1]) || 2;
+  my $iteration_limit = $_[2] || 100;
+  my @out;
+
+  my $by_word = ($arg < 0);
+  my $degree = abs($arg);
+  my $last_match_point;
+
+  $degree = 2 if $degree == 1;
+
+  use locale;
+
+  $in =~ tr<\cm\cj \t>< >s;
+  die "No input\n" unless length $in;
+  study $in;
+
+  my $new_matcher;
+  if($by_word) {
+    $new_matcher = "\\W+(" . join("\\W+", ("\\w+") x $degree) . ")";
+  } else {
+    $new_matcher = "(" . ('.' x $degree) . ")";
+  }
+
+  # In use in the loop.
+  my($re, @orig, $matched, $remainder,
+     $i, $last_matched, $iteration);
+  $iteration = 0;
+
+  $last_match_point = -1;
+  while($iteration < $iteration_limit) {
+    ++$iteration;
+    if($last_matched) { # last thing we matched -- '' means take a stab
+      $last_match_point = pos($in);
+      if($by_word) { # By word...
+        @orig = map(quotemeta($_), $last_matched =~ m/(\w+)/sg );
+        $re =  "\\b"
+               . join("\\W+",  @orig) # overlap
+               . "\\W+("
+               . join("\\W+", ("\\w+") x  $degree) # new tokens
+               . ")(\\W+)"
+        ;
+        $matched = $remainder = '';
+        $last_match_point = pos($in);
+
+        if($in =~ m/$re/sig  ||  $in =~ m/$re/sig) {
+          $matched = $1;
+          $remainder = $2;
+        }
+
+      } else { # By char...
+        @orig = map(quotemeta($_), $last_matched =~ m/(.)/sg );
+        $re =    join('', @orig)     # overlap
+               . '('
+               . ("." x  $degree)    # new tokens
+               . ')';
+
+        $matched = $1  if $in =~ m/$re/sig  ||  $in =~ m/$re/sig;
+      }
+
+      if( $last_match_point == pos($in)  # This was a hapax legomenon.
+          ||  pos($in) == 0              # We didn't match anything.
+
+          # hm, this seems to be not just unnecessary, but BAD.
+          #  ||  abs($last_match_point - pos($in)) < length($in)
+      )
+      {
+        print "Hm, dead end at pos ", (0 + pos($in)), "\n" if $Debug;
+
+        $last_matched = '';
+        next;
+      }
+
+      $last_matched = $matched;
+      print "Matched ($matched) at ", pos($in), "\n" if $Debug;
+      push @out, $by_word ? ($last_matched . $remainder)
+                          :  $last_matched;
+      next;
+
+    } else {
+      # We don't have a last_matched -- take a stab.
+      my($frame, $frame_size);
+      pos($in) = 0;  # Ever necessary?
+      if($by_word) {
+        $frame_size =  ($degree + 3) * 8;
+          # Generously assume 8 chars per word.
+      } else {
+        $frame_size =  ($degree + 1) * 4;
+          # Generously assume 4 bytes per "." char.
+      }
+
+      my $i = int(rand(length($in) - $frame_size));
+      pos($in) = $i;
+      print "Taking a stab at pos $i\n" if $Debug;
+      if(   $in =~ m/$new_matcher/isg
+         || $in =~ m/$new_matcher/isg )  # Yes, try TWICE!  Magic, wooo.
+      {
+        $last_matched = $1;
+      } else {
+        print "Can't get an initial $degree-token match" if $Debug;
+        last;
+      }
+    }
+
+  } # end while
+
+  return join('', @out);
+}
+
+#==========================================================================
+1;
+
+__END__
 
 =head1 NAME
 
@@ -271,10 +430,14 @@ randomness seeding -- just call "srand();", maybe right after you say
 
 =head1 COPYRIGHT
 
-Copyright (c) 1998,1999,2000 Sean M. Burke. All rights reserved.
+Copyright (c) 1998-2001, Sean M. Burke. All rights reserved.
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.
+
+This program is distributed in the hope that it will be useful, but
+without any warranty; without even the implied warranty of
+merchantability or fitness for a particular purpose.
 
 =head1 REMINDER
 
@@ -286,150 +449,3 @@ Sean M. Burke <sburke@cpan.org>
 
 =cut
 
-###########################################################################
-
-sub dissociate_filter {
-  use Text::Wrap;
-  use Getopt::Std;
-  my %o;
-  getopts('c:w:m:', \%o) if @ARGV;
-
-  my $o;
-  my $max;
-  if($_[0]) {
-    $o = $_[0];
-  } elsif($o{'w'}){
-    $o = - abs($o{'w'});
-  } elsif($o{'c'}){
-    $o =   abs($o{'c'});
-  }
-  $o ||= 2;
-
-  if($_[1]) {
-    $max = $_[1];
-  } else {
-    $max = abs($o{'m'});
-  }
-  $max ||= 100;
-
-  print "group_length: $o.  max_length: $max\n" if $Debug;
-  print wrap(   '','', dissociate(join('', <>), $o, $max)  ), "\n";
-  return;
-}
-
-#==========================================================================
-sub dissociate {
-  my $in = $_[0];
-  my $arg = int($_[1]) || 2;
-  my $iteration_limit = $_[2] || 100;
-  my @out;
-
-  my $by_word = ($arg < 0);
-  my $degree = abs($arg);
-  my $last_match_point;
-
-  $degree = 2 if $degree == 1;
-
-  use locale;
-
-  $in =~ tr<\cm\cj \t>< >s;
-  die "No input\n" unless length $in;
-  study $in;
-
-  my $new_matcher;
-  if($by_word) {
-    $new_matcher = "\\W+(" . join("\\W+", ("\\w+") x $degree) . ")";
-  } else {
-    $new_matcher = "(" . ('.' x $degree) . ")";
-  }
-
-  # In use in the loop.
-  my($re, @orig, $matched, $remainder,
-     $i, $last_matched, $iteration);
-
-  $last_match_point = -1;
-  while($iteration < $iteration_limit) {
-    ++$iteration;
-    if($last_matched) { # last thing we matched -- '' means take a stab
-      $last_match_point = pos($in);
-      if($by_word) { # By word...
-        @orig = map(quotemeta($_), $last_matched =~ m/(\w+)/sg );
-        $re =  "\\b"
-               . join("\\W+",  @orig) # overlap
-               . "\\W+("
-               . join("\\W+", ("\\w+") x  $degree) # new tokens
-               . ")(\\W+)"
-        ;
-        $matched = $remainder = '';
-        $last_match_point = pos($in);
-
-        if($in =~ m/$re/sig  ||  $in =~ m/$re/sig) {
-          $matched = $1;
-          $remainder = $2;
-        }
-
-      } else { # By char...
-        @orig = map(quotemeta($_), $last_matched =~ m/(.)/sg );
-        $re =    join('', @orig)     # overlap
-               . '('
-               . ("." x  $degree)    # new tokens
-               . ')';
-
-        $matched = $1  if $in =~ m/$re/sig  ||  $in =~ m/$re/sig;
-      }
-
-      if( $last_match_point == pos($in)  # This was a hapax legomenon.
-          ||  pos($in) == 0              # We didn't match anything.
-
-          # hm, this seems to be not just unnecessary, but BAD.
-          #  ||  abs($last_match_point - pos($in)) < length($in)
-      )
-      {
-        print "Hm, dead end at pos ", (0 + pos($in)), "\n" if $Debug;
-
-        $last_matched = '';
-        next;
-      }
-
-      $last_matched = $matched;
-      print "Matched ($matched) at ", pos($in), "\n" if $Debug;
-      push @out, $by_word ? ($last_matched . $remainder)
-                          :  $last_matched;
-      next;
-
-    } else {
-      # We don't have a last_matched -- take a stab.
-      my($frame, $frame_size);
-      pos($in) = 0;  # Ever necessary?
-      if($by_word) {
-        $frame_size =  ($degree + 3) * 8;
-          # Generously assume 8 chars per word.
-      } else {
-        $frame_size =  ($degree + 1) * 4;
-          # Generously assume 4 bytes per "." char.
-      }
-
-      my $i = int(rand(length($in) - $frame_size));
-      pos($in) = $i;
-      print "Taking a stab at pos $i\n" if $Debug;
-      if(   $in =~ m/$new_matcher/isg
-         || $in =~ m/$new_matcher/isg )  # Yes, try TWICE!  Magic, wooo.
-      {
-        $last_matched = $1;
-      } else {
-        print "Can't get an initial $degree-token match" if $Debug;
-        last;
-      }
-    }
-
-  } # end while
-
-  return join('', @out);
-}
-
-
-#==========================================================================
-
-1;
-
-__END__

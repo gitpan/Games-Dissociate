@@ -1,5 +1,5 @@
 README for Games::Dissociate
-                                        Time-stamp: "2000-05-13 22:02:54 MDT"
+                                        Time-stamp: "2001-03-08 17:55:43 MST"
 
 			  Games::Dissociate
 
@@ -85,6 +85,8 @@ something like this command:
 
   perl Makefile.PL LIB=~/perl
 
+For more information on module installation, see perldoc perlmodinstall
+
 
 DOCUMENTATION
 
@@ -115,3 +117,11 @@ COPYRIGHT
 
 Copyright 1998,1999,2000 Sean M. Burke <sburke@cpan.org>, all rights
 reserved.
+
+This library is free software; you can redistribute it and/or
+modify it under the same terms as Perl itself.
+
+This program is distributed in the hope that it will be useful, but
+without any warranty; without even the implied warranty of
+merchantability or fitness for a particular purpose.
+

@@ -1,5 +1,5 @@
 Revision history for Perl extension Games::Dissociate
-                                        Time-stamp: "2000-05-13 22:05:55 MDT"
+                                        Time-stamp: "2001-03-08 18:26:10 MST"
 
 1998-11-09  Sean M. Burke  sburke@netadventure.net
 
@@ -10,3 +10,12 @@ Revision history for Perl extension Games::Dissociate
 
 	* Release 0.13 -- just noting my new email address
 
+2001-03-08  Sean M. Burke  sburke@cpan.org
+	
+	* Release 0.14 -- fixing an annoying but harmless warning that
+	showed up under -w
+	Also moved the POD to after the source.
+	Added disclaimer to the license.
+	Added reference to perlmodinstall to the README
+	Made dissociate_filter die with usage instructions
+	 if there are inadmissible switches used.
