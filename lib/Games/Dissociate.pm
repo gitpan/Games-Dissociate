@@ -1,5 +1,5 @@
 
-# Time-stamp: "2001-03-08 18:29:43 MST" -*-Perl-*-
+# Time-stamp: "2004-12-29 22:45:42 AST" -*-Perl-*-
 ### The POD is at the end. ###
 require 5.000;
 package Games::Dissociate;
@@ -10,7 +10,7 @@ use vars qw(@ISA @EXPORT @EXPORT_OK $Debug $VERSION);
 use Carp;
 @ISA = qw(Exporter);
 @EXPORT = qw(dissociate_filter dissociate);
-$VERSION = 0.14;
+$VERSION = 0.15;
 $Debug = 0;
 
 ###########################################################################

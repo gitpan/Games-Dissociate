@@ -1,5 +1,5 @@
 Revision history for Perl extension Games::Dissociate
-                                        Time-stamp: "2001-03-08 18:26:10 MST"
+                                        Time-stamp: "2004-12-29 19:39:25 AST"
 
 1998-11-09  Sean M. Burke  sburke@netadventure.net
 
@@ -19,3 +19,7 @@ Revision history for Perl extension Games::Dissociate
 	Added reference to perlmodinstall to the README
 	Made dissociate_filter die with usage instructions
 	 if there are inadmissible switches used.
+
+2004-12-29  Sean M. Burke  sburke@cpan.org
+
+	* Release 0.15 -- just rebundling.  No code changes.
