@@ -1,5 +1,5 @@
 README for Games::Dissociate
-                                        Time-stamp: "1998-11-09 10:19:56 MST"
+                                        Time-stamp: "2000-05-13 22:02:54 MDT"
 
 			  Games::Dissociate
 
@@ -101,7 +101,7 @@ MacPerl site_lib or lib directory, and move Dissociate.pm into there.
 SUPPORT
 
 Questions, bug reports, useful code bits, and suggestions for
-Games::Dissociate should just be sent to me at sburke@netadventure.net
+Games::Dissociate should just be sent to me at sburke@cpan.org
 
 
 AVAILABILITY
@@ -113,5 +113,5 @@ Comprehensive Perl Archive Network (CPAN).  Visit
 
 COPYRIGHT
 
-Copyright 1998, Sean M. Burke <sburke@netadventure.net>, all rights
+Copyright 1998,1999,2000 Sean M. Burke <sburke@cpan.org>, all rights
 reserved.

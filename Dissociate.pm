@@ -1,16 +1,16 @@
-#!/usr/local/bin/perl
-# Time-stamp: "1998-11-09 10:16:03 MST" -*-Perl-*-
 
+# Time-stamp: "2000-05-13 22:09:12 MDT" -*-Perl-*-
+
+require 5.000;
 package Games::Dissociate;
 use strict;
-require 5.000;
 require Exporter;
 
 use vars qw(@ISA @EXPORT @EXPORT_OK $Debug $VERSION);
 use Carp;
 @ISA = qw(Exporter);
 @EXPORT = qw(dissociate_filter dissociate);
-$VERSION = 0.12;
+$VERSION = 0.13;
 $Debug = 0;
 
 =head1 NAME
@@ -271,7 +271,7 @@ randomness seeding -- just call "srand();", maybe right after you say
 
 =head1 COPYRIGHT
 
-Copyright (c) 1998 Sean M. Burke. All rights reserved.
+Copyright (c) 1998,1999,2000 Sean M. Burke. All rights reserved.
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.
@@ -282,7 +282,7 @@ It's just a toy.
 
 =head1 AUTHOR
 
-Sean M. Burke <sburke@netadventure.net>
+Sean M. Burke <sburke@cpan.org>
 
 =cut
 
@@ -344,7 +344,7 @@ sub dissociate {
   }
 
   # In use in the loop.
-  my($re, @orig, $matched, $remainder, $matched,
+  my($re, @orig, $matched, $remainder,
      $i, $last_matched, $iteration);
 
   $last_match_point = -1;
