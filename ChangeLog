@@ -1,10 +1,8 @@
 Revision history for Perl extension Games::Dissociate
-                                        Time-stamp: "2004-12-29 19:39:25 AST"
 
 1998-11-09  Sean M. Burke  sburke@netadventure.net
 
 	* Release 0.12 -- first release version.
-
 
 2000-05-13  Sean M. Burke  sburke@cpan.org
 
@@ -23,3 +21,7 @@ Revision history for Perl extension Games::Dissociate
 2004-12-29  Sean M. Burke  sburke@cpan.org
 
 	* Release 0.15 -- just rebundling.  No code changes.
+
+2006-03-01  Avi Finkel  avi@finkel.org
+
+	* Release 0.16 -- Update to change authorship information

@@ -1,6 +1,4 @@
-
 require 5;
-# Time-stamp: "2004-12-29 20:55:59 AST"
 # Summary of, well, things.
 
 use Test;

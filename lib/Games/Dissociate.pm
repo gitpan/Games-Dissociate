@@ -1,5 +1,3 @@
-
-# Time-stamp: "2004-12-29 22:45:42 AST" -*-Perl-*-
 ### The POD is at the end. ###
 require 5.000;
 package Games::Dissociate;
@@ -10,7 +8,7 @@ use vars qw(@ISA @EXPORT @EXPORT_OK $Debug $VERSION);
 use Carp;
 @ISA = qw(Exporter);
 @EXPORT = qw(dissociate_filter dissociate);
-$VERSION = 0.15;
+$VERSION = 0.16;
 $Debug = 0;
 
 ###########################################################################
@@ -59,7 +57,7 @@ sub dissociate_filter {
 #==========================================================================
 sub dissociate {
   my $in = $_[0];
-  my $arg = int($_[1]) || 2;
+  my $arg = int($_[1] || 2);
   my $iteration_limit = $_[2] || 100;
   my @out;
 
@@ -445,7 +443,7 @@ It's just a toy.
 
 =head1 AUTHOR
 
-Sean M. Burke <sburke@cpan.org>
+Current maintainer Avi Finkel C<avi@finkel.org>;  Original author Sean M. Burke <sburke@cpan.org>
 
 =cut
 

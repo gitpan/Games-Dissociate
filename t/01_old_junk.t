@@ -1,6 +1,3 @@
-
-# Time-stamp: "2004-12-29 22:10:53 AST"
-
 require 5;
 use strict;
 use Test;
