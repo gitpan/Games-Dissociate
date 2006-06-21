@@ -8,7 +8,7 @@ use vars qw(@ISA @EXPORT @EXPORT_OK $Debug $VERSION);
 use Carp;
 @ISA = qw(Exporter);
 @EXPORT = qw(dissociate_filter dissociate);
-$VERSION = 0.16;
+$VERSION = 0.17;
 $Debug = 0;
 
 ###########################################################################
@@ -276,8 +276,13 @@ of text is called "dissociation".
 
 To use this module after you've installed it, say "use
 Games::Dissociate".  This imports the function C<dissociate> and the
-procedure C<dissociate_filter>.  The function C<dissociate> takes
-three parameters:
+procedure C<dissociate_filter>.
+
+=over 4
+
+=item dissociate($input, $group_size, $max)
+
+The function C<dissociate> takes three parameters:
 
   $output = dissociate($input, $group_size, $max);
 
@@ -326,6 +331,12 @@ C<dissociate> can also be called with the following syntaxes:
   dissociate($input);
    # acts like group size of 2 (characters) and max of 100
 
+=item dissociate_filter()
+
+=item dissociate_filter($group_size)
+
+=item dissociate_filter($group_size, $max)
+
 This library also provides the procedure C<dissociate_filter>, which
 pulls input from "<>" (files specified on the command line, or STDIN),
 and sends dissociated output to STDOUT.  It can be called with these
@@ -365,6 +376,8 @@ C<-m[number]> specifies a default for $max.
 
 If you don't specify a default for $group_size or $max, $group_size
 defaults to 100 and $max defaults to 2 (characters).
+
+=back
 
 =head2 Efficiency Notes
 
