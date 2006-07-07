@@ -8,7 +8,7 @@ use vars qw(@ISA @EXPORT @EXPORT_OK $Debug $VERSION);
 use Carp;
 @ISA = qw(Exporter);
 @EXPORT = qw(dissociate_filter dissociate);
-$VERSION = 0.17;
+$VERSION = 0.18;
 $Debug = 0;
 
 ###########################################################################

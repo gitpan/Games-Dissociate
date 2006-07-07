@@ -29,3 +29,7 @@ Revision history for Perl extension Games::Dissociate
 2006-06-21  Avi Finkel  avi@finkel.org
 
 	* Release 0.17 -- Small testing changes and some documentation reorg
+
+2006-07-07  Avi Finkel  avi@finkel.org
+
+	* Release 0.18 -- Fixing the MANIFEST
