@@ -1,15 +1,11 @@
-# This -*-perl-*- script writes the Makefile for installing this distribution.
-#
-# See "perldoc perlmodinstall" or "perldoc ExtUtils::MakeMaker" for
-# info on how to control how the installation goes.
-#
+use inc::Module::Install;
 
-require 5.004;
-use strict;
-use ExtUtils::MakeMaker;
+name 'Games-Dissociate';
+all_from 'lib/Games/Dissociate.pm';
 
-WriteMakefile(
-    'NAME'	=> 'Games::Dissociate',
-    'VERSION_FROM' => 'lib/Games/Dissociate.pm', # finds $VERSION
-    'dist'        => { COMPRESS => 'gzip -6f', SUFFIX => 'gz', },
-);
+build_requires('Test::Pod' => 1.26);
+build_requires('Test::Pod::Coverage' => 1.08);
+build_requires('Pod::Coverage' => 0.18);
+
+auto_install;
+WriteAll;
