@@ -114,8 +114,8 @@ Comprehensive Perl Archive Network (CPAN).  Visit
 
 COPYRIGHT
 
-Copyright 1998-2006 Sean M. Burke <sburke@cpan.org>, all rights
-reserved.
+Copyright 1998-2010 Sean M. Burke <sburke@cpan.org> &
+Avi Finkel <avi@finkel.org>, all rights reserved.
 
 This library is free software; you can redistribute it and/or
 modify it under the same terms as Perl itself.

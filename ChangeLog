@@ -33,3 +33,10 @@ Revision history for Perl extension Games::Dissociate
 2006-07-07  Avi Finkel  avi@finkel.org
 
 	* Release 0.18 -- Fixing the MANIFEST
+
+2010-10-03  Avi Finkel  avi@finkel.org
+
+	* Release 1.0 -- Fixing the bug described in rt.cpan.org bug #32690
+	I seem to have neglected to write a change log entry for 0.19.  Oops
+	I'm going to a 1.0 release here because I think a module which hasn't
+	changed dramatically in 9 years can be considered "mature".

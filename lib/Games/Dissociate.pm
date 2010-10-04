@@ -8,7 +8,7 @@ use vars qw(@ISA @EXPORT @EXPORT_OK $Debug $VERSION);
 use Carp;
 @ISA = qw(Exporter);
 @EXPORT = qw(dissociate_filter dissociate);
-$VERSION = 0.19;
+$VERSION = 1.0;
 $Debug = 0;
 
 ###########################################################################
@@ -44,7 +44,7 @@ sub dissociate_filter {
 
   if($_[1]) {
     $max = $_[1];
-  } else {
+  } elsif ($o{'m'}) {
     $max = abs($o{'m'});
   }
   $max ||= 100;
